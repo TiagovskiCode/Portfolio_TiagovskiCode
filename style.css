@@ -316,7 +316,16 @@ img {
 
 .section_skills {
   width: 100%;
-  padding: 20rem 0;
+  padding: 20rem 0 25rem 0;
+}
+.section_projects {
+  width: 100%;
+  padding: 10rem 0 20rem 0;
+}
+
+.section_contact {
+  width: 100%;
+  padding: 15rem 0 20rem 0;
 }
 
 .hero-wrap {
@@ -434,6 +443,7 @@ img {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+  padding: 2rem 0;
 }
 
 /* Card */
@@ -460,6 +470,119 @@ img {
 
 .container h2 {
   font-size: 50px;
+}
+
+.muted_projects {
+  padding-bottom: 20px;
+}
+
+/* Cards projects */
+
+/* ========================
+   Cards de Projetos Bonitos
+   ======================== */
+.card_projects {
+  background: linear-gradient(145deg, #0f172a, #111827);
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card_projects:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6),
+              0 0 15px rgba(96, 165, 250, 0.5);
+  background: linear-gradient(145deg, #1e293b, #0f172a);
+}
+
+/* Header do card */
+.card_projects .card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1rem 0.5rem 1rem;
+}
+
+.card_projects h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #60a5fa;
+}
+
+/* Links do card */
+.card_projects .card-links a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.3rem 0.6rem;
+  border-radius: 0.6rem;
+  color: #94a3b8;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card_projects .card-links a:hover {
+  color: #fff;
+  background: rgba(96, 165, 250, 0.3);
+  border-color: rgba(96, 165, 250, 0.5);
+}
+
+/* Thumbnail do card */
+.card_projects .thumb {
+  height: 250px;
+  margin: 0.8rem 1rem;
+  border-radius: 15px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #111827 0%, #1e293b 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card_projects .thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.card_projects:hover .thumb img {
+  transform: scale(1.05);
+}
+
+/* Descrição */
+.card_projects p {
+  font-size: 0.95rem;
+  color: var(--muted);
+  padding: 0 1rem 1rem 1rem;
+  line-height: 1.4;
+}
+
+/* Tags / Skills */
+.card_projects .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding: 0 1rem 1rem 1rem;
+}
+
+.card_projects .tags span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card_projects .tags span:hover {
+  color: #fff;
+  border-color: #60a5fa;
+  background: rgba(96, 165, 250, 0.2);
 }
 
 /* Chips */
@@ -603,6 +726,114 @@ img {
   box-shadow: 0 0 0 4px var(--ring);
 }
 .form button { justify-self: start; }
+
+
+/* Contact section */
+
+
+
+.section_contact {
+  width: 100%;
+  padding: 15rem 0 10rem 0;
+}
+
+.section_contact .title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+.section_contact p.muted {
+  color: var(--muted);
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.contact-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-list li {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text);
+}
+
+.contact-list li a {
+  color: var(--primary);
+  transition: color 0.3s ease;
+}
+
+.contact-list li a:hover {
+  color: #fff;
+}
+
+.form {
+  display: grid;
+  gap: 1rem;
+}
+
+.form input,
+.form textarea {
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+  border-radius: 1rem;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form input:focus,
+.form textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--ring);
+}
+
+.form button {
+  background: var(--primary);
+  color: #fff;
+  padding: 0.8rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 1.2rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.form button:hover {
+  background: linear-gradient(135deg, #60a5fa, #7f5af0);
+  box-shadow: 0 0 20px rgba(96,165,250,0.5), 0 0 30px rgba(127,90,240,0.4);
+}
+
+.form .muted.small {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ========================
    Footer
