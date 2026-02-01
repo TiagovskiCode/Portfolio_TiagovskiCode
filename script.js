@@ -1,88 +1,128 @@
-/* // Theme (dark by default, respects preference, stored in localStorage)
-const root = document.documentElement;
-const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-const saved = localStorage.getItem('theme'); // 'dark' or 'light'
-if (saved === 'light' || (!saved && prefersLight)) {
-  root.classList.add('light');
-}
-const themeBtn = document.getElementById('themeToggle');
-const themeIcon = document.querySelector('.theme-icon');
-function setIcon() {
-  const light = root.classList.contains('light');
-  themeIcon.textContent = light ? '🌙' : '☀️';
-}
-setIcon();
-themeBtn.addEventListener('click', () => {
-  root.classList.toggle('light');
-  localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
-  setIcon();
-}); */
+document.addEventListener('DOMContentLoaded', () => {
 
-// Mobile nav
-const hamburger = document.getElementById('hamburger');
-const navMenu = document.getElementById('navMenu');
-hamburger?.addEventListener('click', () => {
-  const open = navMenu.classList.toggle('open');
-  hamburger.setAttribute('aria-expanded', String(open));
-});
+  // ─── Theme Toggle ───────────────────────────────────
+  const root        = document.documentElement;
+  const themeBtn    = document.getElementById('themeToggle');
+  const savedTheme  = localStorage.getItem('theme');
 
-// Elevate header on scroll
-const header = document.querySelector('.header');
-let lastY = window.scrollY;
-addEventListener('scroll', () => {
-  const y = window.scrollY;
-  if (y > 4 && !header.classList.contains('elevated')) header.classList.add('elevated');
-  if (y <= 4) header.classList.remove('elevated');
-  lastY = y;
-});
+  // Apply saved theme or system preference on load
+  if (savedTheme === 'light' || (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+    root.classList.add('light');
+  }
 
-// Reveal on scroll (IntersectionObserver)
-const revealItems = document.querySelectorAll('[data-reveal]');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('revealed');
-      observer.unobserve(entry.target);
+  themeBtn?.addEventListener('click', () => {
+    root.classList.toggle('light');
+    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
+  });
+
+  // ─── Footer Year ────────────────────────────────────
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // ─── Mobile Nav ─────────────────────────────────────
+  const hamburger = document.getElementById('hamburger');
+  const navMenu   = document.getElementById('navMenu');
+
+  hamburger?.addEventListener('click', () => {
+    const open = navMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+    hamburger.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+
+  // Close mobile nav when a link is clicked
+  navMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      navMenu.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ─── Nav Span: hover + scroll spy ─────────────────
+  const sections  = [...document.querySelectorAll('main[id], section[id]')];
+  const navLinks  = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const navSpan   = document.querySelector('.nav_span');
+  let activeLink  = navLinks[0]; // default: Home
+
+  // Move the pill to a given <a>
+  function moveSpanTo(link) {
+    if (!navSpan || !link) return;
+    const navRect  = navMenu.getBoundingClientRect();
+    const linkRect = link.getBoundingClientRect();
+    navSpan.style.left  = (linkRect.left  - navRect.left)  + 'px';
+    navSpan.style.width = linkRect.width + 'px';
+  }
+
+  // Hover: temporarily move span to hovered link
+  navLinks.forEach(link => {
+    link.addEventListener('mouseenter', () => moveSpanTo(link));
+    link.addEventListener('mouseleave', () => moveSpanTo(activeLink)); // snap back
+  });
+
+  // Scroll spy: update activeLink when section changes
+  function updateActiveLink() {
+    let current = navLinks[0];
+
+    sections.forEach((sec, i) => {
+      if (sec.getBoundingClientRect().top <= window.innerHeight * 0.4) {
+        // Find the matching nav link
+        const match = navLinks.find(l => l.getAttribute('href') === '#' + sec.id);
+        if (match) current = match;
+      }
+    });
+
+    activeLink = current;
+    moveSpanTo(activeLink); // only moves if mouse is NOT hovering (mouseleave snaps back here)
+  }
+
+  window.addEventListener('scroll', updateActiveLink, { passive: true });
+
+  // Initial position after layout is painted
+  requestAnimationFrame(() => {
+    updateActiveLink();
+  });
+
+  // ─── Reveal on Scroll (IntersectionObserver) ───────
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
+
+  // ─── Contact Form (Formspree) ───────────────────────
+  const form      = document.getElementById('contactForm');
+  const submitBtn = document.getElementById('submitBtn');
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    // Prevent double-submit
+    form.classList.add('submitting');
+
+    try {
+      const response = await fetch(form.action, {
+        method:  'POST',
+        body:    new FormData(form),
+        headers: { Accept: 'application/json' }
+      });
+
+      if (response.ok) {
+        alert('Mensagem enviada com sucesso! ✉️');
+        form.reset();
+      } else {
+        alert('Erro ao enviar. Por favor tenta novamente.');
+      }
+    } catch {
+      alert('Erro de rede. Verifica a tua conexão e tenta novamente.');
+    } finally {
+      form.classList.remove('submitting');
     }
   });
-}, { threshold: 0.15 });
-revealItems.forEach((el) => observer.observe(el));
 
-// Dynamic timeline dots positions
-const timeline = document.querySelector('.timeline');
-if (timeline) {
-  const dots = timeline.querySelectorAll('.dot');
-  dots.forEach((d, i) => {
-    d.style.top = (i * 92 + 6) + 'px';
-  });
-}
-
-// Footer year
-document.getElementById('year').textContent = new Date().getFullYear();
-
-// Fake contact form handling (prevent submit)
-document.getElementById('contactForm')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  alert('Obrigado! Este formulário é demonstrativo. Liga-o a um backend (ex.: Formspree).');
-});
-
-
-const form = document.getElementById('contactForm');
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const formData = new FormData(form);
-  
-  const response = await fetch(form.action, {
-    method: form.method,
-    body: formData,
-    headers: { 'Accept': 'application/json' }
-  });
-
-  if (response.ok) {
-    alert('Mensagem enviada com sucesso!');
-    form.reset();
-  } else {
-    alert('Erro ao enviar. Tenta novamente.');
-  }
 });
