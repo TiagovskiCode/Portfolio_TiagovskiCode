@@ -1,125 +1,125 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ─── Theme Toggle ───────────────────────────────────
-  const root        = document.documentElement;
-  const themeBtn    = document.getElementById('themeToggle');
-  const savedTheme  = localStorage.getItem('theme');
-
-  // Apply saved theme or system preference on load
-  if (savedTheme === 'light' || (!savedTheme && window.matchMedia('(prefers-color-scheme: light)').matches)) {
-    root.classList.add('light');
-  }
-
-  themeBtn?.addEventListener('click', () => {
-    root.classList.toggle('light');
-    localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark');
-  });
-
-  // ─── Footer Year ────────────────────────────────────
+  // ─── Footer year ─────────────────────────────────────
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // ─── Mobile Nav ─────────────────────────────────────
-  const hamburger = document.getElementById('hamburger');
-  const navMenu   = document.getElementById('navMenu');
+  // ─── HUD clock (24h, local time) ─────────────────────
+  const clockEl = document.getElementById('hudClock');
+  function tickClock() {
+    if (!clockEl) return;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    clockEl.textContent = `${hh}:${mm}:${ss}`;
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
 
-  hamburger?.addEventListener('click', () => {
-    const open = navMenu.classList.toggle('open');
-    hamburger.classList.toggle('open', open);
-    hamburger.setAttribute('aria-expanded', String(open));
-    document.body.style.overflow = open ? 'hidden' : '';
-  });
+  // ─── Starfield canvas ─────────────────────────────────
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let w, h;
 
-  // Close mobile nav when a link is clicked
-  navMenu?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      hamburger.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    });
-  });
-
-  // ─── Nav Span: hover + scroll spy ─────────────────
-  const sections  = [...document.querySelectorAll('main[id], section[id]')];
-  const navLinks  = [...document.querySelectorAll('.nav-links a[href^="#"]')];
-  const navSpan   = document.querySelector('.nav_span');
-  let activeLink  = navLinks[0]; // default: Home
-
-  // Move the pill to a given <a>
-  function moveSpanTo(link) {
-    if (!navSpan || !link) return;
-    const navRect  = navMenu.getBoundingClientRect();
-    const linkRect = link.getBoundingClientRect();
-    navSpan.style.left  = (linkRect.left  - navRect.left)  + 'px';
-    navSpan.style.width = linkRect.width + 'px';
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+    const count = Math.floor((w * h) / 6000);
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.1 + 0.2,
+      baseAlpha: Math.random() * 0.6 + 0.2,
+      twinkleSpeed: Math.random() * 0.02 + 0.005,
+      phase: Math.random() * Math.PI * 2,
+      drift: Math.random() * 0.04 + 0.01,
+    }));
   }
 
-  // Hover: temporarily move span to hovered link
-  navLinks.forEach(link => {
-    link.addEventListener('mouseenter', () => moveSpanTo(link));
-    link.addEventListener('mouseleave', () => moveSpanTo(activeLink)); // snap back
-  });
-
-  // Scroll spy: update activeLink when section changes
-  function updateActiveLink() {
-    let current = navLinks[0];
-
-    sections.forEach((sec, i) => {
-      if (sec.getBoundingClientRect().top <= window.innerHeight * 0.4) {
-        // Find the matching nav link
-        const match = navLinks.find(l => l.getAttribute('href') === '#' + sec.id);
-        if (match) current = match;
-      }
-    });
-
-    activeLink = current;
-    moveSpanTo(activeLink); // only moves if mouse is NOT hovering (mouseleave snaps back here)
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+    for (const s of stars) {
+      const alpha = s.baseAlpha + Math.sin(t * s.twinkleSpeed + s.phase) * 0.25;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(210, 230, 255, ${Math.max(0, alpha)})`;
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fill();
+      s.y += s.drift; // slow downward drift, like passing stars
+      if (s.y > h) { s.y = 0; s.x = Math.random() * w; }
+    }
+    requestAnimationFrame(draw);
   }
 
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  resize();
+  window.addEventListener('resize', resize);
+  if (!reduceMotion) requestAnimationFrame(draw);
+  else draw(0); // draw once, static
 
-  // Initial position after layout is painted
-  requestAnimationFrame(() => {
-    updateActiveLink();
+  // ─── Modal system ─────────────────────────────────────
+  const panels = document.querySelectorAll('.panel[data-target]');
+  const overlays = document.querySelectorAll('.overlay');
+  let lastFocused = null;
+
+  function openModal(id) {
+    const overlay = document.getElementById(id);
+    if (!overlay) return;
+    lastFocused = document.activeElement;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    const closeBtn = overlay.querySelector('.modal-close');
+    closeBtn?.focus();
+    document.addEventListener('keydown', onKeydown);
+  }
+
+  function closeModal(overlay) {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.removeEventListener('keydown', onKeydown);
+    lastFocused?.focus();
+  }
+
+  function onKeydown(e) {
+    if (e.key === 'Escape') {
+      const openOverlay = document.querySelector('.overlay.open');
+      if (openOverlay) closeModal(openOverlay);
+    }
+  }
+
+  panels.forEach(panel => {
+    panel.addEventListener('click', () => openModal(panel.dataset.target));
   });
 
-  // ─── Reveal on Scroll (IntersectionObserver) ───────
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('revealed');
-        revealObserver.unobserve(entry.target);
-      }
+  overlays.forEach(overlay => {
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal(overlay);
     });
-  }, { threshold: 0.12 });
+    overlay.querySelector('[data-close]')?.addEventListener('click', () => closeModal(overlay));
+  });
 
-  document.querySelectorAll('[data-reveal]').forEach(el => revealObserver.observe(el));
-
-  // ─── Contact Form (Formspree) ───────────────────────
-  const form      = document.getElementById('contactForm');
-  const submitBtn = document.getElementById('submitBtn');
+  // ─── Contact form (Formspree) ─────────────────────────
+  const form = document.getElementById('contactForm');
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
-
-    // Prevent double-submit
     form.classList.add('submitting');
 
     try {
       const response = await fetch(form.action, {
-        method:  'POST',
-        body:    new FormData(form),
+        method: 'POST',
+        body: new FormData(form),
         headers: { Accept: 'application/json' }
       });
 
       if (response.ok) {
-        alert('Mensagem enviada com sucesso! ✉️');
+        alert('Message transmitted successfully! ✉️');
         form.reset();
       } else {
-        alert('Erro ao enviar. Por favor tenta novamente.');
+        alert('Something went wrong. Please try again.');
       }
     } catch {
-      alert('Erro de rede. Verifica a tua conexão e tenta novamente.');
+      alert('Network error. Check your connection and try again.');
     } finally {
       form.classList.remove('submitting');
     }
