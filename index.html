@@ -1,220 +1,561 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Tiago Teixeira — Software Developer</title>
-    <meta name="description" content="Portfolio of Tiago Teixeira — developer in Timor-Leste." />
+    <title>Tiago Teixeira — Websites que vendem para o teu negócio</title>
+    <meta name="description" content="Criação de websites, landing pages e automações para pequenas e médias empresas. Rápido, moderno e otimizado para telemóvel." />
+
+    <!-- Open Graph / WhatsApp / social preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tiago Teixeira — Websites que vendem para o teu negócio" />
+    <meta property="og:description" content="Websites ultra-rápidos, modernos e otimizados para telemóvel, entregues em tempo recorde. Landing pages, sites institucionais e automações para PMEs." />
+    <meta property="og:image" content="https://tiagovskicode.github.io/og-cover.png" />
+    <meta property="og:url" content="https://tiagovskicode.github.io/" />
+    <meta property="og:locale" content="pt_PT" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tiago Teixeira — Websites que vendem para o teu negócio" />
+    <meta name="twitter:description" content="Websites ultra-rápidos, modernos e otimizados para telemóvel, entregues em tempo recorde." />
+    <meta name="twitter:image" content="https://tiagovskicode.github.io/og-cover.png" />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e11d2e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Arial, sans-serif' font-weight='800' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.css" integrity="sha512-OQDNdI5rpnZ0BRhhJc+btbbtnxaj+LdQFeh0V9/igiEPDiWE2fG+ZsXl0JEH+bjXKPJ3zcXqNyP4/F/NegVdZg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <canvas id="starfield" aria-hidden="true"></canvas>
-    <div class="scanline" aria-hidden="true"></div>
 
-    <div class="stage">
+    <!-- Nav -->
+    <header class="nav" id="nav">
+      <div class="container nav-inner">
+        <a href="#home" class="brand">Tiago Teixeira</a>
 
-      <!-- Top HUD bar -->
-      <header class="hud-bar">
-        <div class="hud-id">
-          <span class="hud-dot"></span>
-          <span>TIAGO_TEIXEIRA.SYS</span>
-        </div>
-        <div class="hud-status">
-          <span id="hudClock">00:00:00</span>
-          <span class="hud-sep">/</span>
-          <span>DILI, TIMOR-LESTE</span>
-        </div>
-      </header>
+        <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" aria-controls="navMenu">
+          <span></span><span></span><span></span>
+        </button>
 
-      <!-- Center console -->
-      <main class="console">
-        <div class="boot-text" id="bootText">
-          <p class="eyebrow">BOOTING INTERFACE</p>
-          <h1 class="callsign">TIAGO TEIXEIRA</h1>
-          <p class="role">SOFTWARE&nbsp;DEVELOPER <span class="role-dim">// ACTIVE TRAINING</span></p>
-        </div>
+        <nav id="navMenu" class="nav-links" aria-label="Principal">
+          <a href="#about">Sobre</a>
+          <a href="#services">Serviços</a>
+          <a href="#projects">Projetos</a>
+          <a href="#process">Como Funciona</a>
+          <a href="#pricing">Preços</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contacto</a>
+        </nav>
 
-        <div class="panel-grid" role="list">
-
-          <button class="panel" data-target="modal-about" role="listitem">
-            <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
-            <span class="panel-corner bl"></span><span class="panel-corner br"></span>
-            <i class="ri-user-3-line panel-icon"></i>
-            <span class="panel-index">MOD.01</span>
-            <h2>ABOUT ME</h2>
-            <p>Who I am and what drives me</p>
+        <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+            <i class="ri-sun-line icon-sun"></i>
+            <i class="ri-moon-line icon-moon"></i>
           </button>
-
-          <button class="panel" data-target="modal-skills" role="listitem">
-            <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
-            <span class="panel-corner bl"></span><span class="panel-corner br"></span>
-            <i class="ri-terminal-box-line panel-icon"></i>
-            <span class="panel-index">MOD.02</span>
-            <h2>SKILLS</h2>
-            <p>Stack and tools</p>
-          </button>
-
-          <button class="panel" data-target="modal-projects" role="listitem">
-            <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
-            <span class="panel-corner bl"></span><span class="panel-corner br"></span>
-            <i class="ri-rocket-2-line panel-icon"></i>
-            <span class="panel-index">MOD.03</span>
-            <h2>PROJECTS</h2>
-            <p>What I've built so far</p>
-          </button>
-
-          <button class="panel" data-target="modal-contact" role="listitem">
-            <span class="panel-corner tl"></span><span class="panel-corner tr"></span>
-            <span class="panel-corner bl"></span><span class="panel-corner br"></span>
-            <i class="ri-signal-tower-line panel-icon"></i>
-            <span class="panel-index">MOD.04</span>
-            <h2>CONTACT</h2>
-            <p>Open a comms channel</p>
-          </button>
-
-        </div>
-      </main>
-
-      <!-- Bottom HUD bar -->
-      <footer class="hud-bar hud-bar-bottom">
-        <div class="hud-socials">
-          <a href="https://github.com/TiagovskiCode" target="_blank" rel="noreferrer" aria-label="GitHub"><i class="ri-github-fill"></i></a>
-          <a href="https://www.instagram.com/tiago.__.teixeira/" target="_blank" rel="noreferrer" aria-label="Instagram"><i class="ri-instagram-fill"></i></a>
-        </div>
-        <p class="hud-copy">© <span id="year"></span> TIAGO TEIXEIRA — ALL RIGHTS RESERVED</p>
-      </footer>
-
-    </div>
-
-    <!-- ===== MODALS (holographic panels) ===== -->
-
-    <div class="overlay" id="modal-about" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="about-title">
-        <button class="modal-close" data-close aria-label="Close"><i class="ri-close-line"></i></button>
-        <p class="modal-tag">MOD.01 // ABOUT ME</p>
-        <h2 id="about-title" class="modal-title">Identification</h2>
-        <div class="modal-body about-body">
-          <div class="about-text">
-            <div class="about-stats">
-              <div><span>NAME</span><strong>Tiago Teixeira</strong></div>
-              <div><span>AGE</span><strong>18</strong></div>
-              <div><span>LOCATION</span><strong>Dili, Timor-Leste</strong></div>
-              <div><span>ROLE</span><strong>Software Developer</strong></div>
-              <div><span>EXPERIENCE</span><strong>2 years, self-taught</strong></div>
-              <div><span>STATUS</span><strong class="status-active"><span class="pulse"></span>Actively training</strong></div>
-            </div>
-
-            <p>I'm 18 years old and live in Timor-Leste. I've been studying software development on my own for about two years, always looking for projects that push me further.</p>
-            <p>My current focus is web development — plain HTML, CSS and JavaScript, built lightweight and mobile-first for local network conditions — while gradually exploring introductory AI and automation concepts with Python.</p>
-            <p>I like building small but real projects for real people, and documenting the journey as I learn: from first sketch to a working, deployed site.</p>
-            <p class="about-goal"><i class="ri-flag-2-line"></i> Goal: land my first internship or contribute to an open-source project in 2026.</p>
-          </div>
+          <a class="btn btn-primary btn-nav" href="https://wa.me/67077376964?text=Ol%C3%A1!%20Vi%20o%20teu%20site%20e%20gostava%20de%20pedir%20um%20or%C3%A7amento." target="_blank" rel="noreferrer">
+            <i class="ri-whatsapp-line"></i> <span>Pedir Orçamento</span>
+          </a>
         </div>
       </div>
-    </div>
+    </header>
 
-    <div class="overlay" id="modal-skills" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="skills-title">
-        <button class="modal-close" data-close aria-label="Close"><i class="ri-close-line"></i></button>
-        <p class="modal-tag">MOD.02 // SKILLS</p>
-        <h2 id="skills-title" class="modal-title">Stack</h2>
-        <div class="modal-body skills-body">
-          <div class="skill-group">
-            <h3>Frontend</h3>
-            <div class="skill-chips">
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt=""/>HTML</span>
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt=""/>CSS</span>
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt=""/>JavaScript</span>
+    <main id="home">
+
+      <!-- Hero -->
+      <section class="hero" data-reveal>
+        <div class="container hero-grid">
+          <div class="hero-text">
+            <p class="eyebrow">DESENVOLVIMENTO WEB PARA PMEs</p>
+            <h1 class="headline">Transformo a presença digital do teu negócio em <span class="accent-text">vendas reais.</span></h1>
+            <p class="subhead">Websites ultra-rápidos, modernos e otimizados para telemóvel, entregues em tempo recorde.</p>
+
+            <div class="cta-row">
+              <a class="btn btn-primary btn-lg" href="https://wa.me/67077376964?text=Ol%C3%A1!%20Vi%20o%20teu%20site%20e%20gostava%20de%20pedir%20um%20or%C3%A7amento." target="_blank" rel="noreferrer">
+                <i class="ri-whatsapp-line"></i> Pedir Orçamento Gratuito
+              </a>
+              <a class="btn btn-outline btn-lg" href="#projects">Ver Projetos</a>
             </div>
+
+            <ul class="trust-row">
+              <li><i class="ri-speed-up-line"></i> Código nativo, sem excesso</li>
+              <li><i class="ri-smartphone-line"></i> Mobile-first</li>
+              <li><i class="ri-rocket-2-line"></i> Lançamento em &lt;7 dias</li>
+            </ul>
           </div>
-          <div class="skill-group">
-            <h3>Backend</h3>
-            <div class="skill-chips">
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt=""/>Node.js</span>
+
+          <div class="hero-photo" data-reveal>
+            <div class="photo-frame">
+              <img src="image hero.png" alt="Tiago Teixeira" />
             </div>
+            <p class="photo-caption">Tiago Teixeira<br><span>Web Developer · Estudante do 12.º ano<br>Díli, Timor-Leste</span></p>
           </div>
-          <div class="skill-group">
-            <h3>AI &amp; Automation</h3>
-            <div class="skill-chips">
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt=""/>Python</span>
+        </div>
+
+        <div class="container">
+          <div class="stats-bar">
+            <div class="stat"><strong>2+</strong><span>Anos de experiência</span></div>
+            <div class="stat"><strong>2</strong><span>Sites online</span></div>
+            <div class="stat"><strong>&lt;7</strong><span>Dias até ao lançamento</span></div>
+            <div class="stat"><strong>100%</strong><span>Mobile-first</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About -->
+      <section id="about" class="about" data-reveal>
+        <div class="container about-grid">
+          <div class="about-copy">
+            <p class="eyebrow">QUEM ESTÁ DO OUTRO LADO</p>
+            <h2 class="title">Sobre mim</h2>
+            <p>Sou o Tiago, tenho 18 anos e ainda sou <strong>estudante do 12.º ano</strong> em Díli, Timor-Leste. Sou autodidata: passei os últimos dois anos a aprender a construir sites e automações do zero, sempre com o mesmo objetivo, ajudar negócios locais a terem uma presença online que realmente funciona.</p>
+            <p>Ser estudante não muda a forma como trabalho: cada projeto é tratado com seriedade, com prazo e preço combinados antes de começar, e já tenho sites reais no ar para negócios e organizações em Timor-Leste.</p>
+            <p>Trabalho com HTML, CSS e JavaScript nativos — sem frameworks pesados — para entregar sites rápidos, leves e fáceis de manter. Estou também a explorar Python para automações mais avançadas, como formulários inteligentes e integrações diretas com WhatsApp.</p>
+          </div>
+          <div class="about-facts">
+            <div class="fact"><i class="ri-map-pin-line"></i><div><strong>Localização</strong><span>Díli, Timor-Leste</span></div></div>
+            <div class="fact"><i class="ri-code-s-slash-line"></i><div><strong>Stack</strong><span>HTML, CSS, JS, Node.js, Python</span></div></div>
+            <div class="fact"><i class="ri-user-star-line"></i><div><strong>Percurso</strong><span>Estudante do 12.º ano, autodidata</span></div></div>
+            <div class="fact"><i class="ri-whatsapp-line"></i><div><strong>Atendimento</strong><span>Direto via WhatsApp</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Audience -->
+      <section id="audience" class="audience" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">PARA QUEM TRABALHO</p>
+          <h2 class="title center">Feito para negócios como o teu</h2>
+          <p class="muted center">Trabalho com pequenos e médios negócios que querem ser encontrados online e receber mais contactos.</p>
+
+          <div class="audience-grid">
+            <article class="card audience-card" data-reveal>
+              <div class="service-icon"><i class="ri-restaurant-line"></i></div>
+              <h3>Restaurantes &amp; Cafés</h3>
+              <p>Menu, horários e localização à vista, com contacto a um toque de distância.</p>
+            </article>
+            <article class="card audience-card" data-reveal>
+              <div class="service-icon"><i class="ri-hand-heart-line"></i></div>
+              <h3>Empreendimentos Sociais</h3>
+              <p>Conta a tua história e mostra o teu trabalho e os teus produtos.</p>
+            </article>
+            <article class="card audience-card" data-reveal>
+              <div class="service-icon"><i class="ri-graduation-cap-line"></i></div>
+              <h3>Associações &amp; Escolas</h3>
+              <p>Informação clara e um ponto de contacto para toda a comunidade.</p>
+            </article>
+            <article class="card audience-card" data-reveal>
+              <div class="service-icon"><i class="ri-shopping-bag-3-line"></i></div>
+              <h3>Comércio Local</h3>
+              <p>Um catálogo simples e pedidos diretos por WhatsApp.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services -->
+      <section id="services" class="services" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">O QUE FAÇO</p>
+          <h2 class="title center">Serviços</h2>
+          <p class="muted center">Soluções pensadas para o teu negócio crescer online.</p>
+
+          <div class="services-grid">
+            <article class="card service-card" data-reveal>
+              <div class="service-icon"><i class="ri-flashlight-line"></i></div>
+              <h3>Landing Pages de Alta Conversão</h3>
+              <p>Páginas otimizadas para campanhas e anúncios, construídas para transformar visitas em clientes.</p>
+            </article>
+
+            <article class="card service-card" data-reveal>
+              <div class="service-icon"><i class="ri-store-2-line"></i></div>
+              <h3>Websites Institucionais</h3>
+              <p>Presença digital completa para PMEs — rápida, profissional e fácil de manter no dia a dia.</p>
+            </article>
+
+            <article class="card service-card" data-reveal>
+              <div class="service-icon"><i class="ri-settings-4-line"></i></div>
+              <h3>Automações &amp; Integrações</h3>
+              <p>Formulários inteligentes e agendamentos diretos no WhatsApp, sem fricção para o cliente.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why me -->
+      <section id="why" class="why" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">PORQUÊ ESCOLHER-ME</p>
+          <h2 class="title center">Um site que trabalha por ti</h2>
+          <p class="muted center">Simples, rápido e feito a pensar em quem vai realmente usá-lo: os teus clientes.</p>
+
+          <div class="why-grid">
+            <article class="card why-card" data-reveal>
+              <i class="ri-speed-up-line"></i>
+              <div><h3>Rápido a carregar</h3><p>Código nativo, sem frameworks pesados. O site abre depressa, mesmo com ligação lenta.</p></div>
+            </article>
+            <article class="card why-card" data-reveal>
+              <i class="ri-smartphone-line"></i>
+              <div><h3>Pensado para telemóvel</h3><p>A maioria dos clientes vai ver o site no telemóvel, por isso é aí que começo.</p></div>
+            </article>
+            <article class="card why-card" data-reveal>
+              <i class="ri-whatsapp-line"></i>
+              <div><h3>Contacto direto</h3><p>Falas diretamente comigo, sem intermediários, e os teus clientes chegam a ti num toque.</p></div>
+            </article>
+            <article class="card why-card" data-reveal>
+              <i class="ri-translate-2"></i>
+              <div><h3>Português e inglês</h3><p>Sites bilingues para chegar a clientes locais e a quem visita Timor-Leste.</p></div>
+            </article>
+            <article class="card why-card" data-reveal>
+              <i class="ri-customer-service-2-line"></i>
+              <div><h3>Manutenção simples</h3><p>Depois do lançamento, podes contar comigo para manter o site atualizado por 50$ por mês.</p></div>
+            </article>
+            <article class="card why-card" data-reveal>
+              <i class="ri-price-tag-3-line"></i>
+              <div><h3>Orçamento sem compromisso</h3><p>Preço claro e ajustado ao teu negócio, combinado antes de começarmos.</p></div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Projects -->
+      <section id="projects" class="projects" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">CASOS DE SUCESSO</p>
+          <h2 class="title center">Projetos</h2>
+          <p class="muted center">Alguns negócios que já ajudei a ganhar presença online. Clica num projeto para ver mais detalhes e imagens.</p>
+
+          <div class="projects-grid">
+
+            <article class="card project-card" data-reveal data-project="apee" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ver detalhes do projeto Associação Escolar">
+              <div class="project-head">
+                <h3>Associação Escolar</h3>
+                <span class="badge badge-live"><span class="pulse"></span>Online</span>
+              </div>
+              <dl class="project-pss">
+                <div><dt>Problema</dt><dd>Faltava um ponto de contacto digital para pais e alunos ligados à língua e cultura portuguesa em Timor-Leste.</dd></div>
+                <div><dt>Solução</dt><dd>Site institucional multipágina, claro e fácil de navegar para qualquer idade.</dd></div>
+                <div><dt>Resultado</dt><dd>Recurso online ativo e acessível para toda a comunidade escolar.</dd></div>
+              </dl>
+              <span class="project-link">Ver detalhes <i class="ri-zoom-in-line"></i></span>
+            </article>
+
+            <article class="card project-card" data-reveal data-project="aroma" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ver detalhes do projeto Aroma Café">
+              <div class="project-head">
+                <h3>Aroma Café</h3>
+                <span class="badge badge-live"><span class="pulse"></span>Online</span>
+              </div>
+              <dl class="project-pss">
+                <div><dt>Problema</dt><dd>Negócio local sem presença online nem domínio próprio para se apresentar aos clientes.</dd></div>
+                <div><dt>Solução</dt><dd>Compra e configuração de domínio, website moderno, hospedado com desempenho otimizado.</dd></div>
+                <div><dt>Resultado</dt><dd>Presença digital profissional, pronta para partilhar com clientes.</dd></div>
+              </dl>
+              <span class="project-link">Ver detalhes <i class="ri-zoom-in-line"></i></span>
+            </article>
+
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <!-- COMO ATIVAR: quando tiveres depoimentos REAIS, substitui o texto de cada cartão e apaga o atributo "hidden" da <section> abaixo.
+           Para mostrar mais depoimentos, copia um bloco <figure>. Não publiques frases inventadas. -->
+      <section id="testimonials" class="testimonials" data-reveal hidden>
+        <div class="container">
+          <p class="eyebrow center">O QUE DIZEM OS CLIENTES</p>
+          <h2 class="title center">Negócios que confiaram em mim</h2>
+          <p class="muted center">Palavras de quem já trabalhou comigo.</p>
+
+          <div class="quotes-grid">
+            <figure class="card quote-card" data-reveal>
+              <i class="ri-double-quotes-l quote-mark" aria-hidden="true"></i>
+              <blockquote>[SUBSTITUI: frase real do cliente, tal como ele a escreveu]</blockquote>
+              <figcaption><strong>[Nome do cliente]</strong><span>[Cargo] · Aroma Café &amp; Restaurante</span></figcaption>
+            </figure>
+            <figure class="card quote-card" data-reveal>
+              <i class="ri-double-quotes-l quote-mark" aria-hidden="true"></i>
+              <blockquote>[SUBSTITUI: frase real do cliente, tal como ele a escreveu]</blockquote>
+              <figcaption><strong>[Nome do cliente]</strong><span>[Cargo] · Associação Escolar</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- Process -->
+      <section id="process" class="process" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">COMO FUNCIONA</p>
+          <h2 class="title center">3 Passos Simples</h2>
+          <p class="muted center">Do primeiro contacto ao site no ar, sem complicações.</p>
+
+          <div class="process-grid">
+            <div class="process-step" data-reveal>
+              <span class="process-num">01</span>
+              <h3>Diagnóstico do Negócio</h3>
+              <p>Conversamos sobre o teu negócio, o teu cliente e o que o site precisa de alcançar.</p>
             </div>
-          </div>
-          <div class="skill-group">
-            <h3>Tools</h3>
-            <div class="skill-chips">
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt=""/>Git</span>
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt=""/>VS Code</span>
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt=""/>Figma</span>
-              <span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/linux/linux-original.svg" alt=""/>Linux</span>
+            <div class="process-connector" aria-hidden="true"></div>
+            <div class="process-step" data-reveal>
+              <span class="process-num">02</span>
+              <h3>Desenvolvimento &amp; Design Otimizado</h3>
+              <p>Construo o site à medida — rápido, mobile-first e pensado para conversão.</p>
+            </div>
+            <div class="process-connector" aria-hidden="true"></div>
+            <div class="process-step" data-reveal>
+              <span class="process-num">03</span>
+              <h3>Lançamento em &lt;7 Dias</h3>
+              <p>Site no ar, testado e pronto para captar clientes.</p>
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="overlay" id="modal-projects" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="projects-title">
-        <button class="modal-close" data-close aria-label="Close"><i class="ri-close-line"></i></button>
-        <p class="modal-tag">MOD.03 // PROJECTS</p>
-        <h2 id="projects-title" class="modal-title">Mission Log</h2>
-        <div class="modal-body projects-body">
+      <!-- Included -->
+      <section id="included" class="included" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">O QUE ESTÁ INCLUÍDO</p>
+          <h2 class="title center">Tudo o que o teu site precisa</h2>
+          <p class="muted center">Sem surpresas: o essencial vem sempre no projeto.</p>
 
-          <article class="project-card">
-            <div class="project-status live"><span class="pulse"></span>LIVE</div>
-            <h3>Associação Escolar</h3>
-            <p>A site supporting parents and students in promoting Portuguese language and culture in Timor-Leste.</p>
-            <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-            <a href="https://www.apee-epd.org/" target="_blank" rel="noreferrer" class="project-link">View site <i class="ri-arrow-right-up-line"></i></a>
-          </article>
-
-          <article class="project-card">
-            <div class="project-status live"><span class="pulse"></span>LIVE</div>
-            <h3>Aroma Café Timor</h3>
-             <p>Um espaço dedicado a celebrar e dar a conhecer a riqueza do aroma e da cultura do café de Timor-Leste.</p>
-            <div class="project-tags"><span>HTML</span><span>CSS</span><span>JS</span></div>
-            <a href="https://aromacafetimor.com/" target="_blank" rel="noreferrer" class="project-link">View site <i class="ri-arrow-right-up-line"></i></a>
-          </article>
-
-          <article class="project-card locked">
-            <div class="project-status pending">UNDER CONSTRUCTION</div>
-            <h3>Next Mission</h3>
-            <p>New project incoming — loading data.</p>
-            <div class="project-tags"><span>???</span></div>
-          </article>
-
+          <ul class="included-list card">
+            <li><i class="ri-check-line"></i> Design responsivo (telemóvel, tablet e computador)</li>
+            <li><i class="ri-check-line"></i> Otimização de velocidade</li>
+            <li><i class="ri-check-line"></i> Botão de WhatsApp e formulário de contacto</li>
+            <li><i class="ri-check-line"></i> Título, descrição e pré-visualização ao partilhar o link</li>
+            <li><i class="ri-check-line"></i> Domínio e hospedagem, se precisares</li>
+            <li><i class="ri-check-line"></i> Versão bilingue PT/EN (opcional)</li>
+            <li><i class="ri-check-line"></i> Mapa e ligação às tuas redes sociais</li>
+            <li><i class="ri-check-line"></i> Plano de manutenção mensal disponível (50$/mês)</li>
+          </ul>
         </div>
-      </div>
-    </div>
+      </section>
 
-    <div class="overlay" id="modal-contact" aria-hidden="true">
-      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="contact-title">
-        <button class="modal-close" data-close aria-label="Close"><i class="ri-close-line"></i></button>
-        <p class="modal-tag">MOD.04 // CONTACT</p>
-        <h2 id="contact-title" class="modal-title">Open Channel</h2>
-        <div class="modal-body contact-body">
+      <!-- Pricing -->
+      <section id="pricing" class="pricing" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">ORÇAMENTO</p>
+          <h2 class="title center">Quanto custa? Sem surpresas.</h2>
+          <p class="muted center">Dois valores simples: um para criar o site e outro para o manter atualizado.</p>
+
+          <div class="pricing-grid">
+            <article class="card price-card featured" data-reveal>
+              <span class="price-tag">Criação do site</span>
+              <h3>Website simples e direto</h3>
+              <p class="price"><strong>400–600$</strong> <span>ou mais, conforme o projeto</span></p>
+              <p class="price-note">Preço base para um site claro, rápido e feito à medida do teu negócio.</p>
+              <ul class="price-list">
+                <li><i class="ri-check-line"></i> Design moderno e responsivo</li>
+                <li><i class="ri-check-line"></i> Otimizado para telemóvel</li>
+                <li><i class="ri-check-line"></i> Botão de WhatsApp e formulário de contacto</li>
+                <li><i class="ri-check-line"></i> Lançamento em menos de 7 dias</li>
+              </ul>
+              <a class="btn btn-primary" href="https://wa.me/67077376964?text=Ol%C3%A1!%20Gostava%20de%20pedir%20um%20or%C3%A7amento%20para%20um%20website." target="_blank" rel="noreferrer"><i class="ri-whatsapp-line"></i> Pedir orçamento</a>
+            </article>
+
+            <article class="card price-card" data-reveal>
+              <span class="price-tag">Depois do lançamento</span>
+              <h3>Manutenção &amp; alterações</h3>
+              <p class="price"><strong>50$</strong> <span>por mês</span></p>
+              <p class="price-note">Para manteres o site sempre atualizado, sem teres de te preocupar com a parte técnica.</p>
+              <ul class="price-list">
+                <li><i class="ri-check-line"></i> Alterações de textos, imagens e preços</li>
+                <li><i class="ri-check-line"></i> Manutenção e correções</li>
+                <li><i class="ri-check-line"></i> Outros pedidos e novas ideias</li>
+                <li><i class="ri-check-line"></i> Contacto direto via WhatsApp</li>
+              </ul>
+            </article>
+          </div>
+
+          <div class="price-factors">
+            <h3>O que pode fazer o valor subir?</h3>
+            <ul>
+              <li><i class="ri-file-copy-2-line"></i><span><strong>Número de páginas</strong> Quanto maior o site, mais trabalho de design e conteúdo.</span></li>
+              <li><i class="ri-tools-line"></i><span><strong>Funcionalidades extra</strong> Por exemplo reservas, carrinho com WhatsApp ou versão em dois idiomas.</span></li>
+              <li><i class="ri-image-line"></i><span><strong>Conteúdo</strong> Se os textos e as imagens já estão prontos ou se é preciso ajudar a prepará-los.</span></li>
+            </ul>
+            <p class="price-disclaimer">Os valores são indicativos. O preço final é combinado contigo, por escrito, antes de começar.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section id="faq" class="faq" data-reveal>
+        <div class="container">
+          <p class="eyebrow center">PERGUNTAS FREQUENTES</p>
+          <h2 class="title center">FAQ</h2>
+          <p class="muted center">O que os clientes mais perguntam antes de avançar.</p>
+
+          <div class="faq-list">
+            <details class="faq-item" data-reveal>
+              <summary>Quanto custa um website?</summary>
+              <p>Um website simples e direto tem um preço base de cerca de 400 a 600$, e sobe conforme o número de páginas e as funcionalidades. Fala comigo no WhatsApp e envio-te um orçamento sem compromisso, com o valor exato antes de começarmos.</p>
+            </details>
+            <details class="faq-item" data-reveal>
+              <summary>Quanto tempo demora mesmo?</summary>
+              <p>A maioria dos projetos fica pronta em menos de 7 dias a partir do momento em que tenho o conteúdo (textos, imagens, logótipo) do teu negócio.</p>
+            </details>
+            <details class="faq-item" data-reveal>
+              <summary>Preciso de ter domínio e hospedagem próprios?</summary>
+              <p>Não precisas de saber nada disso à partida — posso tratar da compra do domínio e da hospedagem por ti, ou usar os que já tiveres.</p>
+            </details>
+            <details class="faq-item" data-reveal>
+              <summary>Depois do site estar no ar, continuo a ter suporte?</summary>
+              <p>Sim. Depois do lançamento posso ficar responsável pela manutenção, alterações e outros pedidos por 50$ por mês. Não desapareço assim que o projeto fica pronto.</p>
+            </details>
+            <details class="faq-item" data-reveal>
+              <summary>Fazes só sites ou também automações?</summary>
+              <p>Os dois. Além do website em si, faço formulários inteligentes e integrações diretas com WhatsApp para facilitar o contacto com os teus clientes.</p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA banner -->
+      <section class="cta-section" data-reveal>
+        <div class="container">
+          <div class="cta-banner">
+            <div>
+              <h2>Pronto para ter um site que traz clientes?</h2>
+              <p>Fala comigo no WhatsApp e pede o teu orçamento gratuito, sem compromisso.</p>
+            </div>
+            <a class="btn btn-primary btn-lg" href="https://wa.me/67077376964?text=Ol%C3%A1!%20Vi%20o%20teu%20site%20e%20gostava%20de%20pedir%20um%20or%C3%A7amento." target="_blank" rel="noreferrer">
+              <i class="ri-whatsapp-line"></i> Pedir Orçamento Gratuito
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section id="contact" class="contact" data-reveal>
+        <div class="container contact-grid">
+          <div class="contact-info">
+            <p class="eyebrow">VAMOS CONVERSAR</p>
+            <h2 class="title">Pronto para começar?</h2>
+            <p class="muted">Conta-me um pouco sobre o teu negócio e eu respondo em breve com os próximos passos — sem compromisso.</p>
+
+            <a class="btn btn-primary contact-whatsapp" href="https://wa.me/67077376964?text=Ol%C3%A1!%20Vi%20o%20teu%20site%20e%20gostava%20de%20pedir%20um%20or%C3%A7amento." target="_blank" rel="noreferrer">
+              <i class="ri-whatsapp-line"></i> Falar no WhatsApp
+            </a>
+
+            <ul class="contact-list">
+              <li><a href="https://github.com/TiagovskiCode" target="_blank" rel="noreferrer"><i class="ri-github-fill"></i> GitHub</a></li>
+              <li><a href="https://www.instagram.com/tiago.__.teixeira/" target="_blank" rel="noreferrer"><i class="ri-instagram-fill"></i> Instagram</a></li>
+            </ul>
+          </div>
+
           <form class="form" id="contactForm" action="https://formspree.io/f/mnnzrpjq" method="POST">
-            <label class="sr-only" for="name">Name</label>
-            <input id="name" name="name" type="text" placeholder="Name" required autocomplete="name"/>
-            <label class="sr-only" for="email">Email</label>
-            <input id="email" name="email" type="email" placeholder="Email" required autocomplete="email"/>
-            <label class="sr-only" for="message">Message</label>
-            <textarea id="message" name="message" placeholder="Message" rows="4" required></textarea>
-            <button type="submit" class="btn-send" id="submitBtn">
-              <span class="btn-text">TRANSMIT <i class="ri-send-plane-2-line"></i></span>
-              <span class="btn-loading">SENDING...</span>
+            <label class="sr-only" for="name">Nome</label>
+            <input id="name" name="name" type="text" placeholder="Nome" required autocomplete="name"/>
+            <label class="sr-only" for="company">Empresa</label>
+            <input id="company" name="company" type="text" placeholder="Empresa" autocomplete="organization"/>
+            <label class="sr-only" for="message">Mensagem</label>
+            <textarea id="message" name="message" placeholder="Conta-me sobre o teu projeto" rows="5" required></textarea>
+            <button type="submit" class="btn btn-primary form-submit" id="submitBtn">
+              <span class="btn-text">Enviar Mensagem</span>
+              <span class="btn-loading">A enviar...</span>
             </button>
           </form>
-          <div class="contact-links">
-            <a href="https://github.com/TiagovskiCode" target="_blank" rel="noreferrer"><i class="ri-github-fill"></i> GitHub</a>
-            <a href="https://www.instagram.com/tiago.__.teixeira/" target="_blank" rel="noreferrer"><i class="ri-instagram-fill"></i> Instagram</a>
-          </div>
         </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container footer-wrap">
+        <p class="muted small">© <span id="year"></span> Tiago Teixeira. Todos os direitos reservados.</p>
+        <nav class="footer-nav" aria-label="Rodapé">
+          <a href="#home">Início</a>
+          <a href="#services">Serviços</a>
+          <a href="#projects">Projetos</a>
+          <a href="#pricing">Preços</a>
+          <a href="#faq">FAQ</a>
+          <a href="#contact">Contacto</a>
+        </nav>
       </div>
-    </div>
+    </footer>
+
+    <!-- Floating WhatsApp button -->
+    <a class="whatsapp-float" href="https://wa.me/67077376964?text=Ol%C3%A1!%20Vi%20o%20teu%20site%20e%20gostava%20de%20pedir%20um%20or%C3%A7amento." target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp">
+      <i class="ri-whatsapp-line"></i>
+    </a>
+
+    <!-- Project modal (zoom in / zoom out) -->
+    <dialog class="project-modal" id="projectModal" aria-labelledby="pmTitle">
+      <div class="pm-inner">
+        <button class="pm-close" id="pmClose" type="button" aria-label="Fechar"><i class="ri-close-line"></i></button>
+
+        <div class="pm-gallery">
+          <div class="pm-stage" id="pmStage">
+            <img id="pmImg" alt="" draggable="false" hidden />
+            <div class="pm-placeholder" id="pmPlaceholder"><i class="ri-image-line"></i><span>A carregar…</span></div>
+            <div class="pm-controls" id="pmControls">
+              <button type="button" id="pmPrev" aria-label="Imagem anterior"><i class="ri-arrow-left-s-line"></i></button>
+              <span class="pm-counter" id="pmCounter"></span>
+              <button type="button" id="pmNext" aria-label="Imagem seguinte"><i class="ri-arrow-right-s-line"></i></button>
+              <span class="pm-sep" aria-hidden="true"></span>
+              <button type="button" id="pmZoomOut" aria-label="Zoom out"><i class="ri-zoom-out-line"></i></button>
+              <button type="button" id="pmZoomIn" aria-label="Zoom in"><i class="ri-zoom-in-line"></i></button>
+            </div>
+          </div>
+          <div class="pm-thumbs" id="pmThumbs"></div>
+        </div>
+
+        <div class="pm-info" id="pmInfo"></div>
+      </div>
+    </dialog>
+
+    <!-- Project details (conteúdo do modal). Para adicionar imagens: coloca os ficheiros na pasta img/ e acrescenta um <li><img data-src="img/ficheiro.jpg" alt="..."></li> -->
+    <template id="project-apee" data-title="Associação Escolar" data-status="Online">
+      <ul class="pm-images">
+        <li><img data-src="img/apee-1.jpg" alt="Página inicial do site da Associação Escolar" /></li>
+        <li><img data-src="img/apee-2.jpg" alt="Página interior do site da Associação Escolar" /></li>
+        <li><img data-src="img/apee-3.jpg" alt="Site da Associação Escolar no telemóvel" /></li>
+      </ul>
+      <p class="pm-lead">Um ponto de contacto digital para pais e alunos, com navegação simples para qualquer idade.</p>
+      <dl class="project-pss">
+        <div><dt>Problema</dt><dd>Faltava um ponto de contacto digital para pais e alunos ligados à língua e cultura portuguesa em Timor-Leste.</dd></div>
+        <div><dt>Solução</dt><dd>Site institucional multipágina, claro e fácil de navegar para qualquer idade.</dd></div>
+        <div><dt>Resultado</dt><dd>Recurso online ativo e acessível para toda a comunidade escolar.</dd></div>
+      </dl>
+      <h4 class="pm-sub">O que foi feito</h4>
+      <ul class="pm-features">
+        <li>Site institucional com várias páginas</li>
+        <li>Navegação clara e simples para qualquer idade</li>
+        <li>Otimizado para telemóvel</li>
+      </ul>
+      <ul class="pm-tags"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+      <div class="pm-actions">
+        <a class="btn btn-outline" data-site-link href="https://www.apee-epd.org/" target="_blank" rel="noreferrer"><i class="ri-external-link-line"></i> Visitar site</a>
+      </div>
+    </template>
+
+    <template id="project-aroma" data-title="Aroma Café &amp; Restaurante" data-status="Online">
+      <ul class="pm-images">
+        <li><img data-src="img/aroma-1.jpg" alt="Página inicial do site do Aroma Café" /></li>
+        <li><img data-src="img/aroma-2.jpg" alt="Menu do Aroma Café" /></li>
+        <li><img data-src="img/aroma-3.jpg" alt="Site do Aroma Café no telemóvel" /></li>
+      </ul>
+      <p class="pm-lead">Site bilingue (português e inglês) para um café e restaurante em Díli, com domínio próprio e reservas por WhatsApp.</p>
+      <dl class="project-pss">
+        <div><dt>Problema</dt><dd>Negócio local sem presença online nem domínio próprio para se apresentar aos clientes.</dd></div>
+        <div><dt>Solução</dt><dd>Compra e configuração de domínio, website moderno, hospedado com desempenho otimizado.</dd></div>
+        <div><dt>Resultado</dt><dd>Presença digital profissional, no ar e pronta para partilhar com clientes.</dd></div>
+      </dl>
+      <h4 class="pm-sub">O que foi feito</h4>
+      <ul class="pm-features">
+        <li>Versões em português e inglês de cada página</li>
+        <li>Reservas por WhatsApp, em PT e EN</li>
+        <li>Carrossel de imagens</li>
+        <li>Cores escolhidas a partir do logótipo</li>
+        <li>Domínio próprio e hospedagem configurados</li>
+      </ul>
+      <ul class="pm-tags"><li>HTML</li><li>CSS</li><li>JavaScript</li><li>PT/EN</li><li>WhatsApp</li></ul>
+      <div class="pm-actions">
+        <!-- Cola aqui o link do site do Aroma em href="" (se ficar vazio, o botão não aparece) -->
+        <a class="btn btn-outline" data-site-link href="" target="_blank" rel="noreferrer"><i class="ri-external-link-line"></i> Visitar site</a>
+      </div>
+    </template>
 
     <script src="script.js"></script>
   </body>
