@@ -71,10 +71,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Contact form (Formspree) ──────────────────────────
   const form = document.getElementById('contactForm');
+  const statusEl = document.getElementById('formStatus');
+  const WA_LINK = 'https://wa.me/67077376964?text=' + encodeURIComponent('Olá! Enviei uma mensagem pelo site e gostava de falar sobre o meu projeto.');
+
+  function showStatus(state, html) {
+    if (!statusEl) return;
+    statusEl.dataset.state = state;
+    statusEl.innerHTML = html;
+    statusEl.hidden = false;
+    statusEl.focus({ preventScroll: true });
+    statusEl.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }
 
   form?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (form.classList.contains('submitting')) return;
     form.classList.add('submitting');
+    if (statusEl) statusEl.hidden = true;
 
     try {
       const response = await fetch(form.action, {
@@ -84,75 +97,35 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       if (response.ok) {
-        alert('Mensagem enviada com sucesso! Entro em contacto em breve. ✉️');
         form.reset();
+        showStatus('success', 'Mensagem enviada com sucesso! Respondo-te em breve. Se for urgente, <a href="' + WA_LINK + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.');
       } else {
-        alert('Algo correu mal. Tenta novamente ou fala comigo no WhatsApp.');
+        showStatus('error', 'Algo correu mal ao enviar. Tenta novamente ou <a href="' + WA_LINK + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.');
       }
     } catch {
-      alert('Erro de rede. Verifica a tua ligação e tenta novamente.');
+      showStatus('error', 'Sem ligação à internet? Verifica a tua ligação e tenta novamente, ou <a href="' + WA_LINK + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.');
     } finally {
       form.classList.remove('submitting');
     }
   });
 
-  // ─── Project modal (zoom in / zoom out + gallery) ──────
+  // ─── Project modal (galeria vertical + zoom por imagem) ─
   const modal = document.getElementById('projectModal');
 
   if (modal) {
     const WA_BASE = 'https://wa.me/67077376964?text=';
-    const ZOOM_LEVELS = [1, 2, 3];
 
-    const stage = document.getElementById('pmStage');
-    const imgEl = document.getElementById('pmImg');
+    const gallery = document.getElementById('pmGallery');
+    const shotsEl = document.getElementById('pmShots');
     const placeholder = document.getElementById('pmPlaceholder');
     const placeholderText = placeholder.querySelector('span');
-    const controls = document.getElementById('pmControls');
-    const thumbsEl = document.getElementById('pmThumbs');
+    const hint = document.getElementById('pmHint');
     const infoEl = document.getElementById('pmInfo');
-    const counter = document.getElementById('pmCounter');
-    const btnPrev = document.getElementById('pmPrev');
-    const btnNext = document.getElementById('pmNext');
-    const btnIn = document.getElementById('pmZoomIn');
-    const btnOut = document.getElementById('pmZoomOut');
     const btnClose = document.getElementById('pmClose');
 
-    let images = [];
-    let current = 0;
-    let zoomIdx = 0;
     let lastFocus = null;
     let token = 0;
     let closing = false;
-    let startX = 0, startY = 0, dragged = false;
-
-    const originFrom = (e) => {
-      const r = stage.getBoundingClientRect();
-      const x = Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100));
-      const y = Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100));
-      return `${x}% ${y}%`;
-    };
-
-    function setZoom(idx, origin) {
-      zoomIdx = Math.max(0, Math.min(ZOOM_LEVELS.length - 1, idx));
-      if (origin) imgEl.style.transformOrigin = origin;
-      if (zoomIdx === 0) imgEl.style.transformOrigin = '50% 50%';
-      imgEl.style.transform = `scale(${ZOOM_LEVELS[zoomIdx]})`;
-      stage.classList.toggle('zoomed', zoomIdx > 0);
-      btnOut.disabled = zoomIdx === 0;
-      btnIn.disabled = zoomIdx === ZOOM_LEVELS.length - 1;
-    }
-
-    function showImage(i) {
-      if (!images.length) return;
-      current = (i + images.length) % images.length;
-      imgEl.src = images[current].src;
-      imgEl.alt = images[current].alt;
-      imgEl.hidden = false;
-      placeholder.hidden = true;
-      setZoom(0);
-      counter.textContent = `${current + 1} / ${images.length}`;
-      thumbsEl.querySelectorAll('.pm-thumb').forEach((t, idx) => t.classList.toggle('active', idx === current));
-    }
 
     const loadImage = (item) => new Promise(resolve => {
       const probe = new Image();
@@ -161,36 +134,71 @@ document.addEventListener('DOMContentLoaded', () => {
       probe.src = item.src;
     });
 
-    function buildGallery(list) {
-      images = list;
-      thumbsEl.innerHTML = '';
-      const many = images.length > 1;
+    // Amplia / reduz uma imagem. rx e ry (0 a 1) indicam o ponto onde se clicou.
+    function toggleZoom(fig, view, rx, ry) {
+      if (fig.classList.contains('zoomed')) {
+        fig.classList.remove('zoomed');
+        view.scrollLeft = 0;
+        view.scrollTop = 0;
+        return;
+      }
+      fig.classList.add('zoomed');
+      view.scrollLeft = rx * view.scrollWidth - view.clientWidth / 2;
+      view.scrollTop = ry * view.scrollHeight - view.clientHeight / 2;
+      fig.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
 
-      if (!images.length) {
-        imgEl.hidden = true;
+    function buildGallery(list) {
+      shotsEl.innerHTML = '';
+
+      if (!list.length) {
         placeholder.hidden = false;
         placeholderText.textContent = 'Imagens em breve';
-        controls.hidden = true;
+        hint.hidden = true;
         return;
       }
 
-      controls.hidden = false;
-      btnPrev.hidden = btnNext.hidden = counter.hidden = !many;
+      placeholder.hidden = true;
+      list.forEach(item => {
+        const fig = document.createElement('figure');
+        fig.className = 'pm-shot';
 
-      if (many) {
-        images.forEach((item, idx) => {
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'pm-thumb';
-          b.setAttribute('aria-label', `Ver imagem ${idx + 1}`);
-          const t = document.createElement('img');
-          t.src = item.src; t.alt = '';
-          b.appendChild(t);
-          b.addEventListener('click', () => showImage(idx));
-          thumbsEl.appendChild(b);
+        const view = document.createElement('div');
+        view.className = 'pm-shot-view';
+        view.tabIndex = 0;
+        view.setAttribute('role', 'button');
+        view.setAttribute('aria-label', 'Ampliar ou reduzir imagem');
+
+        const img = new Image();
+        img.src = item.src;
+        img.alt = item.alt;
+        img.decoding = 'async';
+        img.draggable = false;
+        view.appendChild(img);
+        fig.appendChild(view);
+
+        if (item.alt) {
+          const cap = document.createElement('figcaption');
+          cap.textContent = item.alt;
+          fig.appendChild(cap);
+        }
+
+        view.addEventListener('click', (e) => {
+          const r = img.getBoundingClientRect();
+          const rx = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width));
+          const ry = Math.min(1, Math.max(0, (e.clientY - r.top) / r.height));
+          toggleZoom(fig, view, rx, ry);
         });
-      }
-      showImage(0);
+        view.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleZoom(fig, view, 0.5, 0.5);
+          }
+        });
+
+        shotsEl.appendChild(fig);
+      });
+      hint.hidden = false;
     }
 
     async function openProject(id) {
@@ -235,18 +243,16 @@ document.addEventListener('DOMContentLoaded', () => {
       cta.target = '_blank';
       cta.rel = 'noreferrer';
       cta.href = WA_BASE + encodeURIComponent(`Olá! Vi o projeto ${title} e gostava de pedir um orçamento para um site semelhante.`);
-      cta.innerHTML = '<i class="ri-whatsapp-line"></i> Quero um site assim';
+      cta.innerHTML = '<i class="ri-whatsapp-line"><svg aria-hidden="true" focusable="false"><use href="#ri-whatsapp-line"/></svg></i> Quero um site assim';
       actions.prepend(cta);
       infoEl.scrollTop = 0;
 
       // Estado inicial (a carregar)
-      images = [];
-      thumbsEl.innerHTML = '';
-      imgEl.hidden = true;
+      shotsEl.innerHTML = '';
+      hint.hidden = true;
       placeholder.hidden = false;
       placeholderText.textContent = 'A carregar…';
-      controls.hidden = true;
-      setZoom(0);
+      gallery.scrollTop = 0;
 
       lastFocus = document.activeElement;
       if (!modal.open) modal.showModal();
@@ -286,34 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btnClose.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     modal.addEventListener('cancel', (e) => { e.preventDefault(); closeModal(); });
-
-    // Galeria
-    btnPrev.addEventListener('click', () => showImage(current - 1));
-    btnNext.addEventListener('click', () => showImage(current + 1));
-
-    // Zoom in / zoom out
-    btnIn.addEventListener('click', () => setZoom(zoomIdx + 1));
-    btnOut.addEventListener('click', () => setZoom(zoomIdx - 1));
-
-    stage.addEventListener('pointerdown', (e) => { startX = e.clientX; startY = e.clientY; dragged = false; });
-    stage.addEventListener('pointermove', (e) => {
-      if (e.buttons && Math.hypot(e.clientX - startX, e.clientY - startY) > 6) dragged = true;
-      if (zoomIdx > 0 && (e.pointerType === 'mouse' || e.buttons)) imgEl.style.transformOrigin = originFrom(e);
-    });
-    stage.addEventListener('click', (e) => {
-      if (imgEl.hidden || e.target.closest('.pm-controls')) return;
-      if (dragged) { dragged = false; return; }
-      if (zoomIdx === 0) setZoom(1, originFrom(e));
-      else setZoom(0);
-    });
-
-    // Teclado
-    modal.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft' && images.length > 1) showImage(current - 1);
-      else if (e.key === 'ArrowRight' && images.length > 1) showImage(current + 1);
-      else if (e.key === '+' || e.key === '=') setZoom(zoomIdx + 1);
-      else if (e.key === '-') setZoom(zoomIdx - 1);
-    });
   }
 
 });
