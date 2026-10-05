@@ -21,23 +21,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  // ─── Mobile nav ────────────────────────────────────────
+  // ─── Mobile nav (gaveta à direita + overlay + botão X) ──
   const hamburger = document.getElementById('hamburger');
   const navMenu = document.getElementById('navMenu');
+  const navOverlay = document.getElementById('navOverlay');
+  const navClose = document.getElementById('navClose');
+  const desktopMQ = window.matchMedia('(min-width: 761px)');
 
-  hamburger?.addEventListener('click', () => {
-    const open = navMenu.classList.toggle('open');
+  function setMenu(open) {
+    if (!navMenu || !hamburger) return;
+    const wasOpen = navMenu.classList.contains('open');
+    if (wasOpen === open) return;
+    navMenu.classList.toggle('open', open);
+    navOverlay?.classList.toggle('open', open);
     hamburger.setAttribute('aria-expanded', String(open));
     document.body.style.overflow = open ? 'hidden' : '';
+    document.body.classList.toggle('menu-open', open);
+    if (open) navClose?.focus();
+    else hamburger.focus();
+  }
+
+  hamburger?.addEventListener('click', () => setMenu(!navMenu.classList.contains('open')));
+  navClose?.addEventListener('click', () => setMenu(false));
+  navOverlay?.addEventListener('click', () => setMenu(false));
+  navMenu?.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setMenu(false)));
+
+  document.addEventListener('keydown', (e) => {
+    if (!navMenu?.classList.contains('open')) return;
+    if (e.key === 'Escape') { setMenu(false); return; }
+    if (e.key === 'Tab') {                       // mantém o foco dentro da gaveta
+      const items = [...navMenu.querySelectorAll('a, button')].filter(el => el.offsetParent !== null);
+      if (!items.length) return;
+      const first = items[0], last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
   });
 
-  navMenu?.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      navMenu.classList.remove('open');
-      hamburger.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
-    });
-  });
+  desktopMQ.addEventListener('change', (e) => { if (e.matches) setMenu(false); });
 
   // ─── Scroll spy: highlight active nav link ─────────────
   const sections = [...document.querySelectorAll('main section[id]')];
@@ -107,6 +128,55 @@ document.addEventListener('DOMContentLoaded', () => {
     } finally {
       form.classList.remove('submitting');
     }
+  });
+
+  // ─── FAQ: acordeão animado (uma pergunta aberta de cada vez) ─
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isFaqOpen = (item) => item._target ?? item.open;
+
+  function setFaq(item, open) {
+    if (isFaqOpen(item) === open) return;
+    item._target = open;
+
+    const startH = item.offsetHeight;
+    const prev = item._anim; item._anim = null; prev?.cancel();
+
+    // mede a altura aberta e a fechada
+    item.open = true;
+    const openH = item.offsetHeight;
+    item.open = false;
+    const closedH = item.offsetHeight;
+    item.open = true;                      // fica aberto durante a animação
+
+    if (reduceMotion || typeof item.animate !== 'function') {
+      item.open = open; item._target = undefined;
+      return;
+    }
+
+    item.style.overflow = 'hidden';
+    const anim = item.animate(
+      { height: [startH + 'px', (open ? openH : closedH) + 'px'] },
+      { duration: 260, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1)' }
+    );
+    item._anim = anim;
+    anim.onfinish = () => {
+      if (item._anim !== anim) return;
+      item.open = open;
+      item._anim = null; item._target = undefined;
+      item.style.overflow = '';
+    };
+  }
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    item.querySelector('summary')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      const willOpen = !isFaqOpen(item);
+      if (willOpen) {
+        const group = item.closest('[data-faq]') || document;
+        group.querySelectorAll('.faq-item').forEach(other => { if (other !== item) setFaq(other, false); });
+      }
+      setFaq(item, willOpen);
+    });
   });
 
   // ─── Project modal (galeria vertical + zoom por imagem) ─
