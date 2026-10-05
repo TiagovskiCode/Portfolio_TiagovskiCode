@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://tiagovskicode.github.io/sitemap.xml
+Sitemap: https://tiagovskicode.github.io/Portfolio_TiagovskiCode/sitemap.xml
