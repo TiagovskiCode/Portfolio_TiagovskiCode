@@ -60,23 +60,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
   desktopMQ.addEventListener('change', (e) => { if (e.matches) setMenu(false); });
 
-  // ─── Scroll spy: highlight active nav link ─────────────
+  // ─── Scroll spy (só quando o menu tem âncoras #) ───────
+  // Nas páginas separadas o menu não tem âncoras, por isso nem se regista o evento de scroll.
   const sections = [...document.querySelectorAll('main section[id]')];
   const navLinks = [...document.querySelectorAll('.nav-links a[href^="#"]')];
 
-  function updateActiveLink() {
-    let current = null;
-    sections.forEach(sec => {
-      if (!sec.offsetParent) return;
-      if (sec.getBoundingClientRect().top <= window.innerHeight * 0.4) current = sec.id;
-    });
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + current);
-    });
-  }
+  if (navLinks.length && sections.length) {
+    let ticking = false;
 
-  window.addEventListener('scroll', updateActiveLink, { passive: true });
-  updateActiveLink();
+    const updateActiveLink = () => {
+      ticking = false;
+      let current = null;
+      sections.forEach(sec => {
+        if (!sec.offsetParent) return;
+        if (sec.getBoundingClientRect().top <= window.innerHeight * 0.4) current = sec.id;
+      });
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+      });
+    };
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(updateActiveLink); }
+    }, { passive: true });
+    updateActiveLink();
+  }
 
   // ─── Reveal on scroll ──────────────────────────────────
   const revealObserver = new IntersectionObserver((entries) => {
@@ -197,13 +205,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let token = 0;
     let closing = false;
 
-    const loadImage = (item) => new Promise(resolve => {
-      const probe = new Image();
-      probe.onload = () => resolve(item);
-      probe.onerror = () => resolve(null);
-      probe.src = item.src;
-    });
-
     // Amplia / reduz uma imagem. rx e ry (0 a 1) indicam o ponto onde se clicou.
     function toggleZoom(fig, view, rx, ry) {
       if (fig.classList.contains('zoomed')) {
@@ -218,7 +219,9 @@ document.addEventListener('DOMContentLoaded', () => {
       fig.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
     }
 
-    function buildGallery(list) {
+    // Mostra as imagens à medida que chegam: a 1.ª com prioridade, as restantes só perto do ecrã.
+    // Antes esperava-se por TODAS as imagens antes de mostrar a primeira (pesado em dados móveis).
+    function renderGallery(list, myToken) {
       shotsEl.innerHTML = '';
 
       if (!list.length) {
@@ -229,7 +232,19 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       placeholder.hidden = true;
-      list.forEach(item => {
+      hint.hidden = false;
+      let pending = list.length;
+
+      const settle = () => {
+        if (myToken !== token) return;
+        if (--pending === 0 && !shotsEl.children.length) {
+          placeholder.hidden = false;
+          placeholderText.textContent = 'Imagens em breve';
+          hint.hidden = true;
+        }
+      };
+
+      list.forEach((item, i) => {
         const fig = document.createElement('figure');
         fig.className = 'pm-shot';
 
@@ -240,10 +255,15 @@ document.addEventListener('DOMContentLoaded', () => {
         view.setAttribute('aria-label', 'Ampliar ou reduzir imagem');
 
         const img = new Image();
-        img.src = item.src;
         img.alt = item.alt;
         img.decoding = 'async';
         img.draggable = false;
+        if (i === 0) img.fetchPriority = 'high';
+        else img.loading = 'lazy';
+        img.addEventListener('load', () => { fig.classList.add('loaded'); settle(); });
+        img.addEventListener('error', () => { fig.remove(); settle(); });
+        img.src = item.src;
+
         view.appendChild(img);
         fig.appendChild(view);
 
@@ -268,10 +288,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         shotsEl.appendChild(fig);
       });
-      hint.hidden = false;
     }
 
-    async function openProject(id) {
+    function openProject(id) {
       const tpl = document.getElementById('project-' + id);
       if (!tpl || closing) return;
 
@@ -317,20 +336,13 @@ document.addEventListener('DOMContentLoaded', () => {
       actions.prepend(cta);
       infoEl.scrollTop = 0;
 
-      // Estado inicial (a carregar)
-      shotsEl.innerHTML = '';
-      hint.hidden = true;
-      placeholder.hidden = false;
-      placeholderText.textContent = 'A carregar…';
+      // As imagens começam a descarregar já, em paralelo com a animação de abertura
       gallery.scrollTop = 0;
+      renderGallery(list, myToken);
 
       lastFocus = document.activeElement;
       if (!modal.open) modal.showModal();
       document.body.style.overflow = 'hidden';
-
-      const loaded = (await Promise.all(list.map(loadImage))).filter(Boolean);
-      if (myToken !== token) return;
-      buildGallery(loaded);
     }
 
     function closeModal() {

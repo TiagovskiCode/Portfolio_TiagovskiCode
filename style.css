@@ -1,7 +1,18 @@
+/* Fonte de reserva com métricas ajustadas à Inter: evita o "salto" do texto quando a Inter carrega */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('Helvetica Neue'), local('Helvetica');
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.48%;
+  line-gap-override: 0%;
+}
+
 /* ========================================================
    TOKENS — dark (default) + light
    ======================================================== */
 :root {
+  color-scheme: dark;
   --bg: #0a0a0a;
   --bg-soft: #121212;
   --surface: #161616;
@@ -21,7 +32,7 @@
   --green: #22c55e;
   --amber: #f59e0b;
 
-  --font: 'Inter', sans-serif;
+  --font: 'Inter', 'Inter Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --maxw: 1140px;
   --radius: 10px;
 
@@ -30,6 +41,7 @@
 }
 
 :root[data-theme="light"] {
+  color-scheme: light;
   --bg: #ffffff;
   --bg-soft: #f8f6f6;
   --surface: #ffffff;
@@ -1187,4 +1199,56 @@ i > svg { width: 1em; height: 1em; fill: currentColor; display: block; }
 }
 @media (prefers-reduced-motion: reduce) {
   .nav-links, .nav-overlay { transition: none; }
+}
+
+
+/* ========================================================
+   PERFORMANCE (telemóvel)
+   ======================================================== */
+
+/* Topo da página: entrada só com CSS e só com transform. O texto está sempre visível,
+   por isso não depende do JS para aparecer (melhora o LCP em ligações lentas). */
+@keyframes riseIn { from { transform: translateY(14px); } to { transform: none; } }
+.hero-grid, .page-hero > .container { animation: riseIn 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+/* Secções abaixo da dobra só são desenhadas quando se aproximam do ecrã */
+main > section:not(:first-child),
+.footer {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 640px;
+}
+
+/* Galeria do modal: esqueleto até a imagem chegar (sem saltos de layout) */
+.pm-shot img { opacity: 0; transition: opacity 0.25s ease; }
+.pm-shot.loaded img { opacity: 1; }
+.pm-shot:not(.loaded) .pm-shot-view { aspect-ratio: 16 / 10; background: var(--bg-soft); }
+
+@media (max-width: 760px) {
+  /* Grelha de fundo: deixa de ser uma camada fixa em ecrã inteiro (repintada a cada scroll) */
+  body::before { position: absolute; inset: 0 0 auto 0; height: 100svh; opacity: 0.45; }
+
+  /* Manchas do hero: o gradiente já esbate sozinho, por isso o blur de 70px é custo sem ganho */
+  .hero::before, .hero::after { filter: none; }
+  .hero::before { width: 380px; height: 380px; }
+  .hero::after  { width: 300px; height: 300px; }
+
+  /* backdrop-filter repinta a cada frame de scroll: fundo quase sólido em vez de desfoque */
+  .nav::before {
+    background: color-mix(in srgb, var(--bg) 96%, transparent);
+    backdrop-filter: none; -webkit-backdrop-filter: none;
+  }
+  .nav-overlay { backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .preview-thumb .badge { backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(10, 10, 10, 0.78); }
+  .project-modal::backdrop { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+
+/* Ecrãs tácteis: sem "hover" preso depois de tocar (evita repintar sombras grandes) */
+@media (hover: none) {
+  .card:hover, .stack-badge:hover, .btn-primary:hover { transform: none; box-shadow: none; }
+  .preview-card:hover .preview-thumb img { transform: none; }
+  .whatsapp-float:hover { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-grid, .page-hero > .container { animation: none; }
 }
