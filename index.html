@@ -21,14 +21,15 @@
     <meta name="twitter:image" content="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/og-cover.png" />
 
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23e11d2e'/%3E%3Ctext x='50' y='68' font-size='56' font-family='Arial, sans-serif' font-weight='800' text-anchor='middle' fill='white'%3ET%3C/text%3E%3C/svg%3E" />
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" rel="stylesheet" />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400..800&display=swap" /></noscript>
     <link rel="stylesheet" href="style.css" />
     <meta name="theme-color" content="#0a0a0a" />
     <noscript><style>[data-reveal]{opacity:1!important;transform:none!important}</style></noscript>
@@ -92,7 +93,7 @@
     <main id="home">
 
 <!-- Hero -->
-      <section class="hero" data-reveal>
+      <section class="hero">
         <div class="container hero-grid">
           <div class="hero-text">
             <p class="eyebrow">DESENVOLVIMENTO WEB PARA PMEs</p>
@@ -115,7 +116,7 @@
 
           <div class="hero-photo" data-reveal>
             <div class="photo-frame">
-              <img src="image hero.png" alt="Tiago Teixeira" width="600" height="600" fetchpriority="high" decoding="async" />
+              <img src="img/hero-600.webp" srcset="img/hero-300.webp 300w, img/hero-450.webp 450w, img/hero-600.webp 600w, img/hero-900.webp 900w" sizes="min(300px, 70vw)" alt="Tiago Teixeira" width="600" height="600" fetchpriority="high" decoding="async" />
             </div>
             <p class="photo-caption">Tiago Teixeira<br><span>Web Developer · Díli, Timor-Leste</span></p>
           </div>
@@ -173,7 +174,7 @@
 
             <article class="card preview-card" data-reveal>
               <div class="preview-thumb">
-                <img src="apee-1.png" alt="Página inicial do site da Associação Escolar" loading="lazy" decoding="async" />
+                <img src="img/apee-card-640.webp" srcset="img/apee-card-640.webp 640w, img/apee-card-960.webp 960w" sizes="(max-width: 720px) 90vw, 450px" alt="Página inicial do site da Associação Escolar" width="960" height="600" loading="lazy" decoding="async" />
                 <span class="badge badge-live"><span class="pulse"></span>Online</span>
               </div>
               <div class="preview-body">
@@ -189,7 +190,7 @@
 
             <article class="card preview-card" data-reveal>
               <div class="preview-thumb">
-                <img src="aroma-1.png" alt="Página inicial do site do Aroma Café" loading="lazy" decoding="async" />
+                <img src="img/aroma-card-640.webp" srcset="img/aroma-card-640.webp 640w, img/aroma-card-960.webp 960w" sizes="(max-width: 720px) 90vw, 450px" alt="Página inicial do site do Aroma Café" width="960" height="600" loading="lazy" decoding="async" />
                 <span class="badge badge-live"><span class="pulse"></span>Online</span>
               </div>
               <div class="preview-body">
