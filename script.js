@@ -2,6 +2,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ─── Theme toggle (dark / light) ───────────────────────
   const root = document.documentElement;
+  const isEn = root.lang === 'en';
+  const T = isEn ? {
+    waForm: 'Hi! I sent a message through the website and would like to talk about my project.',
+    ok: (l) => 'Message sent successfully! I will get back to you soon. If it is urgent, <a href="' + l + '" target="_blank" rel="noreferrer">message me on WhatsApp</a>.',
+    err: (l) => 'Something went wrong while sending. Please try again or <a href="' + l + '" target="_blank" rel="noreferrer">message me on WhatsApp</a>.',
+    off: (l) => 'No internet connection? Check your connection and try again, or <a href="' + l + '" target="_blank" rel="noreferrer">message me on WhatsApp</a>.',
+    zoom: 'Zoom image in or out',
+    soon: 'Images coming soon',
+    eyebrow: 'SUCCESS STORY',
+    waProject: (t) => `Hi! I saw the ${t} project and would like to request a quote for a similar website.`,
+    cta: 'I want a site like this'
+  } : {
+    waForm: 'Olá! Enviei uma mensagem pelo site e gostava de falar sobre o meu projeto.',
+    ok: (l) => 'Mensagem enviada com sucesso! Respondo-te em breve. Se for urgente, <a href="' + l + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.',
+    err: (l) => 'Algo correu mal ao enviar. Tenta novamente ou <a href="' + l + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.',
+    off: (l) => 'Sem ligação à internet? Verifica a tua ligação e tenta novamente, ou <a href="' + l + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.',
+    zoom: T.zoom,
+    soon: 'Imagens em breve',
+    eyebrow: 'CASO DE SUCESSO',
+    waProject: (t) => `Olá! Vi o projeto ${t} e gostava de pedir um orçamento para um site semelhante.`,
+    cta: 'Quero um site assim'
+  };
   const themeBtn = document.getElementById('themeToggle');
   const savedTheme = localStorage.getItem('theme');
 
@@ -101,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // ─── Contact form (Formspree) ──────────────────────────
   const form = document.getElementById('contactForm');
   const statusEl = document.getElementById('formStatus');
-  const WA_LINK = 'https://wa.me/67077376964?text=' + encodeURIComponent('Olá! Enviei uma mensagem pelo site e gostava de falar sobre o meu projeto.');
+  const WA_LINK = 'https://wa.me/67077376964?text=' + encodeURIComponent(T.waForm);
 
   function showStatus(state, html) {
     if (!statusEl) return;
@@ -127,12 +149,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         form.reset();
-        showStatus('success', 'Mensagem enviada com sucesso! Respondo-te em breve. Se for urgente, <a href="' + WA_LINK + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.');
+        showStatus('success', T.ok(WA_LINK));
       } else {
-        showStatus('error', 'Algo correu mal ao enviar. Tenta novamente ou <a href="' + WA_LINK + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.');
+        showStatus('error', T.err(WA_LINK));
       }
     } catch {
-      showStatus('error', 'Sem ligação à internet? Verifica a tua ligação e tenta novamente, ou <a href="' + WA_LINK + '" target="_blank" rel="noreferrer">fala comigo no WhatsApp</a>.');
+      showStatus('error', T.off(WA_LINK));
     } finally {
       form.classList.remove('submitting');
     }
@@ -226,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!list.length) {
         placeholder.hidden = false;
-        placeholderText.textContent = 'Imagens em breve';
+        placeholderText.textContent = T.soon;
         hint.hidden = true;
         return;
       }
@@ -239,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (myToken !== token) return;
         if (--pending === 0 && !shotsEl.children.length) {
           placeholder.hidden = false;
-          placeholderText.textContent = 'Imagens em breve';
+          placeholderText.textContent = T.soon;
           hint.hidden = true;
         }
       };
@@ -252,7 +274,7 @@ document.addEventListener('DOMContentLoaded', () => {
         view.className = 'pm-shot-view';
         view.tabIndex = 0;
         view.setAttribute('role', 'button');
-        view.setAttribute('aria-label', 'Ampliar ou reduzir imagem');
+        view.setAttribute('aria-label', T.zoom);
 
         const img = new Image();
         img.alt = item.alt;
@@ -305,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
       infoEl.innerHTML = '';
       const eyebrow = document.createElement('p');
       eyebrow.className = 'eyebrow';
-      eyebrow.textContent = 'CASO DE SUCESSO';
+      eyebrow.textContent = T.eyebrow;
       const h3 = document.createElement('h3');
       h3.id = 'pmTitle';
       h3.textContent = title;
@@ -331,8 +353,8 @@ document.addEventListener('DOMContentLoaded', () => {
       cta.className = 'btn btn-primary';
       cta.target = '_blank';
       cta.rel = 'noreferrer';
-      cta.href = WA_BASE + encodeURIComponent(`Olá! Vi o projeto ${title} e gostava de pedir um orçamento para um site semelhante.`);
-      cta.innerHTML = '<i class="ri-whatsapp-line"><svg aria-hidden="true" focusable="false"><use href="#ri-whatsapp-line"/></svg></i> Quero um site assim';
+      cta.href = WA_BASE + encodeURIComponent(T.waProject(title));
+      cta.innerHTML = '<i class="ri-whatsapp-line"><svg aria-hidden="true" focusable="false"><use href="#ri-whatsapp-line"/></svg></i> ' + T.cta;
       actions.prepend(cta);
       infoEl.scrollTop = 0;
 

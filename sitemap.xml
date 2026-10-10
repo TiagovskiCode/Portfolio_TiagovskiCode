@@ -1,38 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/</loc>
-    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/" />
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/" />
+    <lastmod>2026-10-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/sobre.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/sobre.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/sobre.html" />
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/about.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/sobre.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/about.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/sobre.html" />
+    <lastmod>2026-10-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/projetos.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/projetos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/projects.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/projetos.html" />
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/projects.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/projetos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/projects.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/projetos.html" />
+    <lastmod>2026-10-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/servicos.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/servicos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/services.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/servicos.html" />
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/services.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/servicos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/services.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/servicos.html" />
+    <lastmod>2026-10-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/precos.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/precos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/pricing.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/precos.html" />
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/pricing.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/precos.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/pricing.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/precos.html" />
     <lastmod>2026-10-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/contacto.html</loc>
-    <lastmod>2026-10-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/contacto.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/contact.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/contacto.html" />
+    <lastmod>2026-10-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/contact.html</loc>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/contacto.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/en/contact.html" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://tiagovskicode.github.io/Portfolio_TiagovskiCode/contacto.html" />
+    <lastmod>2026-10-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

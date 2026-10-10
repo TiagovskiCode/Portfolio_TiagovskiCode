@@ -208,6 +208,16 @@ ul { list-style: none; }
   transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 .theme-toggle:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg-soft); }
+.lang-toggle {
+  height: 38px; min-width: 38px; padding: 0 10px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+.lang-toggle:hover { border-color: var(--border-strong); color: var(--text); background: var(--bg-soft); }
 .icon-moon { display: none; }
 :root[data-theme="light"] .icon-sun { display: none; }
 :root[data-theme="light"] .icon-moon { display: block; }
